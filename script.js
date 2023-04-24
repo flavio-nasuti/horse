@@ -2,7 +2,7 @@
 
 const canvas = document.getElementById("canvas")
 const context = canvas.getContext("2d")
-const speed = 4
+const speed = 260
 const itemSize = 20
 const swipeLimit = 80
 const topWallPosition = 0
@@ -17,6 +17,8 @@ let isPoisonGenerated = false
 let poisonsPositions = []
 let swipeStartX = 0
 let swipeStartY = 0
+let secondsPassed = 0
+let oldTimeStamp = 0
 
 class Sprite
 {
@@ -68,22 +70,22 @@ class Horse extends Sprite
         if (this.direction == "right")
         {
             this.positionHorizontaly()
-            this.positionX += this.speed
+            this.positionX += Math.round(this.speed * secondsPassed)
         }
         else if (this.direction == "left")
         {
             this.positionHorizontaly()
-            this.positionX -= this.speed
+            this.positionX -= Math.round(this.speed * secondsPassed)
         }
         else if (this.direction == "up")
         {
             this.positionVerticaly()
-            this.positionY -= this.speed
+            this.positionY -= Math.round(this.speed * secondsPassed)
         }
         else if (this.direction == "down")
         {
             this.positionVerticaly()
-            this.positionY += this.speed
+            this.positionY += Math.round(this.speed * secondsPassed)
         }
     }
 }
@@ -367,15 +369,17 @@ function resetGame()
     gameOver = false
 }
 
-function gameLoop()
+function gameLoop(timeStamp)
 {   
     generatePoison()
     generateFood()
-    animateHorse()
+    secondsPassed = (timeStamp - oldTimeStamp) / 1000
+    oldTimeStamp = timeStamp
+    animateHorse() 
     checkWallCollision()
     checkPoisonCollision()
     checkFoodCollision()
-
+    
     if (!gameOver)
     {
         window.requestAnimationFrame(gameLoop)

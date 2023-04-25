@@ -66,7 +66,6 @@ function getRandomDirection()
     {
         return "down"
     }
-
 }
 
 class Horse extends Sprite
@@ -113,7 +112,7 @@ class Horse extends Sprite
     }
 }
 
-const horse = new Horse(0, 0, 40, 20, "brown", getRandomDirection(), speed, 0);
+const horse = new Horse(0, 0, 40, 20, "brown", "right", speed, 0);
 
 function getKeyInput(key)
 {

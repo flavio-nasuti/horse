@@ -17,8 +17,9 @@ let isPoisonGenerated = false
 let poisonsPositions = []
 let swipeStartX = 0
 let swipeStartY = 0
+let currentFrameTimestamp = 0
+let previousFrameTimestamp = 0
 let secondsPassed = 0
-let oldTimeStamp = 0
 
 class Sprite
 {
@@ -366,15 +367,18 @@ function resetGame()
     poison.PositionY = 0
     poisonsPositions = []
 
+    previousFrameTimestamp = window.performance.now()
+
     gameOver = false
 }
 
-function gameLoop(timeStamp)
+function gameLoop(currentFrameTimestamp)
 {   
+    secondsPassed = (currentFrameTimestamp - previousFrameTimestamp) / 1000
+    previousFrameTimestamp = currentFrameTimestamp
+    
     generatePoison()
     generateFood()
-    secondsPassed = (timeStamp - oldTimeStamp) / 1000
-    oldTimeStamp = timeStamp
     animateHorse() 
     checkWallCollision()
     checkPoisonCollision()

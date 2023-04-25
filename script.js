@@ -319,7 +319,7 @@ class Text
     writeText()
     {
         context.font = this.size + "px sans-serif"
-        context.fillStyle = "white"
+        context.fillStyle = "#F0F0F0"
         context.textAlign = "center"
         context.fillText(this.text, halfScreen, halfScreen)
     }
@@ -327,7 +327,7 @@ class Text
 
 function displayGameOver()
 {
-    const blackRectangle = new Sprite(0, Math.floor((fullScreen - (fullScreen / 4)) / 2), fullScreen, (fullScreen / 4), "black")
+    const blackRectangle = new Sprite(0, Math.floor((fullScreen - (fullScreen / 4)) / 2), fullScreen, (fullScreen / 4), "#303030")
     let highscore = localStorage.getItem("highscore")
 
     // Set highscore to zero at first game

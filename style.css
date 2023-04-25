@@ -6,6 +6,6 @@ html, body
 
 canvas
 {
-    border: 20px solid black;
+    border: 20px solid #303030;
     background-color: wheat;
 }

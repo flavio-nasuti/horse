@@ -7,4 +7,5 @@ html, body
 canvas
 {
     border: 20px solid black;
+    background-color: wheat;
 }

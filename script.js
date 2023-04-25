@@ -220,7 +220,7 @@ function generatePoison()
                 poison.positionX = Math.floor(Math.random() * (fullScreen - 20))
                 poison.positionY = Math.floor(Math.random() * (fullScreen - 20)) 
             }
-            while (!(isPoisonNotOnHorse()))
+            while (!isPoisonNotOnHorse())
 
             // Get poisons positions for collision check
             let poisonPositionPair = []

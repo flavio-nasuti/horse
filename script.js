@@ -47,6 +47,28 @@ class Sprite
 const food = new Sprite(0, 0, itemSize, itemSize, "green")
 const poison = new Sprite(0, 0, itemSize, itemSize, "red")
 
+function getRandomDirection()
+{
+    let randomNumber = Math.random()
+    if (randomNumber < 0.25)
+    {
+        return "right"
+    }
+    else if (randomNumber >= 0.25 && randomNumber < 0.50)
+    {
+        return "left"
+    }
+    else if (randomNumber >= 0.50 && randomNumber < 0.75)
+    {
+        return "up"
+    }
+    else
+    {
+        return "down"
+    }
+
+}
+
 class Horse extends Sprite
 {
     constructor(positionX, positionY, sizeX, sizeY, color, direction, speed, score)
@@ -91,7 +113,7 @@ class Horse extends Sprite
     }
 }
 
-const horse = new Horse(0, 0, 40, 20, "brown", "right", speed, 0);
+const horse = new Horse(0, 0, 40, 20, "brown", getRandomDirection(), speed, 0);
 
 function getKeyInput(key)
 {
@@ -355,7 +377,7 @@ function resetGame()
 {
     horse.positionX = halfScreen
     horse.positionY = halfScreen
-    horse.direction = "right"
+    horse.direction = getRandomDirection()
     horse.score = 0
 
     isFoodGenerated = false

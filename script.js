@@ -381,12 +381,7 @@ function resetGame()
     horse.score = 0
 
     isFoodGenerated = false
-    food.positionX = 0
-    food.positionY = 0
-
     isPoisonGenerated = false
-    poison.PositionX = 0
-    poison.PositionY = 0
     poisonsPositions = []
 
     previousFrameTimestamp = window.performance.now()

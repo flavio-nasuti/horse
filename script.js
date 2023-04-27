@@ -2,15 +2,18 @@
 
 const canvas = document.getElementById("canvas")
 const context = canvas.getContext("2d")
-const speed = 260
+const swipeLimit = 40
+const speed = 250
 const itemSize = 20
-const swipeLimit = 50
+const fontSize = 32
+const lightBlack = "#303030"
+const lightWhite = "#CFCFCF" 
 const topWallPosition = 0
 const leftWallPosition = 0
 let bottomWallPosition = 0
 let rightWallPosition = 0
-let fullScreen = 0
-let halfScreen = 0
+let gameAreaSize = 0
+let gameAreaHalfSize = 0
 let gameOver = false
 let isFoodGenerated = false
 let isPoisonGenerated = false
@@ -46,27 +49,6 @@ class Sprite
 
 const food = new Sprite(0, 0, itemSize, itemSize, "green")
 const poison = new Sprite(0, 0, itemSize, itemSize, "red")
-
-function getRandomDirection()
-{
-    let randomNumber = Math.random()
-    if (randomNumber < 0.25)
-    {
-        return "right"
-    }
-    else if (randomNumber >= 0.25 && randomNumber < 0.50)
-    {
-        return "left"
-    }
-    else if (randomNumber >= 0.50 && randomNumber < 0.75)
-    {
-        return "up"
-    }
-    else
-    {
-        return "down"
-    }
-}
 
 class Horse extends Sprite
 {
@@ -114,23 +96,40 @@ class Horse extends Sprite
 
 const horse = new Horse(0, 0, 40, 20, "brown", "right", speed, 0);
 
+class Text
+{
+    constructor(text, size, color)
+    {
+        this.text = text
+        this.size = size
+        this.color = color
+    }
+    writeText()
+    {
+        context.font = this.size + "px sans-serif"
+        context.fillStyle = this.color
+        context.textAlign = "center"
+        context.fillText(this.text, gameAreaHalfSize, gameAreaHalfSize)
+    }
+}
+
 function getKeyInput(key)
 {
     if (!gameOver)
     {
-        if (key.code == "ArrowUp" && horse.direction != "down")
+        if ((key.code == "ArrowUp" || key.code == "KeyW") && horse.direction != "down")
         {
             horse.direction = "up"
         }
-        else if (key.code == "ArrowDown" && horse.direction != "up")
+        else if ((key.code == "ArrowDown" || key.code == "KeyS") && horse.direction != "up")
         {
             horse.direction = "down"
         }
-        else if (key.code == "ArrowRight" && horse.direction != "left")
+        else if ((key.code == "ArrowRight" || key.code == "KeyD") && horse.direction != "left")
         {
             horse.direction = "right"
         }
-        else if (key.code == "ArrowLeft" && horse.direction != "right")
+        else if ((key.code == "ArrowLeft" || key.code == "KeyA") && horse.direction != "right")
         {
             horse.direction = "left"
         }    
@@ -217,8 +216,8 @@ function generatePoison()
             // Set poisons positions, not too close to horse
             do
             {
-                poison.positionX = Math.floor(Math.random() * (fullScreen - 20))
-                poison.positionY = Math.floor(Math.random() * (fullScreen - 20)) 
+                poison.positionX = Math.floor(Math.random() * (gameAreaSize - 20))
+                poison.positionY = Math.floor(Math.random() * (gameAreaSize - 20)) 
             }
             while (!isPoisonNotOnHorse())
 
@@ -259,8 +258,8 @@ function generateFood()
         // Set food position, not too close to walls, nor on a poison
         do
         {
-            food.positionX = Math.floor(Math.random() * (fullScreen - 80)) + 40
-            food.positionY = Math.floor(Math.random() * (fullScreen - 80)) + 40
+            food.positionX = Math.floor(Math.random() * (gameAreaSize - 80)) + 40
+            food.positionY = Math.floor(Math.random() * (gameAreaSize - 80)) + 40
         }
         while (isFoodOnPoison())
 
@@ -309,25 +308,9 @@ function checkFoodCollision()
     }
 }
 
-class Text
-{
-    constructor(text, size)
-    {
-        this.text = text
-        this.size = size
-    }
-    writeText()
-    {
-        context.font = this.size + "px sans-serif"
-        context.fillStyle = "#F0F0F0"
-        context.textAlign = "center"
-        context.fillText(this.text, halfScreen, halfScreen)
-    }
-}
-
 function displayGameOver()
 {
-    const blackRectangle = new Sprite(0, Math.floor((fullScreen - (fullScreen / 4)) / 2), fullScreen, (fullScreen / 4), "#303030")
+    const blackRectangle = new Sprite(0, Math.round(gameAreaSize * 3 / 8), gameAreaSize, Math.round(gameAreaSize / 4), lightBlack)
     let highscore = localStorage.getItem("highscore")
 
     // Set highscore to zero at first game
@@ -342,12 +325,12 @@ function displayGameOver()
     {
         highscore = horse.score
         localStorage.setItem("highscore", horse.score)
-        const newHighscore = new Text("New Highscore " + highscore, 28)
+        const newHighscore = new Text("New Highscore " + highscore, fontSize, lightWhite)
         newHighscore.writeText()
     }
     else
     {
-        const playerScore = new Text("Score " + horse.score + "  -  Highscore " + highscore, 28)
+        const playerScore = new Text("Score " + horse.score + " - Highscore " + highscore, fontSize, lightWhite)
         playerScore.writeText()
     }
 }
@@ -366,16 +349,37 @@ function sizeScreen()
         canvas.height = canvas.width
     }
 
-    fullScreen = canvas.height
-    halfScreen = Math.floor(fullScreen / 2)
-    bottomWallPosition = fullScreen - 40
-    rightWallPosition = fullScreen - 40
+    gameAreaSize = canvas.height
+    gameAreaHalfSize = Math.floor(gameAreaSize / 2)
+    bottomWallPosition = gameAreaSize - 40
+    rightWallPosition = gameAreaSize - 40
+}
+
+function getRandomDirection()
+{
+    let randomNumber = Math.random()
+    if (randomNumber < 0.25)
+    {
+        return "right"
+    }
+    else if (randomNumber >= 0.25 && randomNumber < 0.50)
+    {
+        return "left"
+    }
+    else if (randomNumber >= 0.50 && randomNumber < 0.75)
+    {
+        return "up"
+    }
+    else
+    {
+        return "down"
+    }
 }
 
 function resetGame()
 {
-    horse.positionX = halfScreen
-    horse.positionY = halfScreen
+    horse.positionX = gameAreaHalfSize
+    horse.positionY = gameAreaHalfSize
     horse.direction = getRandomDirection()
     horse.score = 0
 

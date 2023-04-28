@@ -2,12 +2,14 @@
 
 const canvas = document.getElementById("canvas")
 const context = canvas.getContext("2d")
-const swipeLimit = 40
-const speed = 250
+const swipeLimit = 30
+const speed = 240
+const horseLength = 40
+const horseWidth = 20
 const itemSize = 20
-const fontSize = 32
+const fontSize = 30
 const lightBlack = "#303030"
-const lightWhite = "#CFCFCF" 
+const lightWhite = "#CFCFCF"
 const topWallPosition = 0
 const leftWallPosition = 0
 let bottomWallPosition = 0
@@ -61,13 +63,13 @@ class Horse extends Sprite
     }
     positionHorizontaly()
     {
-        this.sizeX = 40
-        this.sizeY = 20
+        this.sizeX = horseLength
+        this.sizeY = horseWidth
     }
     positionVerticaly()
     {
-        this.sizeX = 20
-        this.sizeY = 40
+        this.sizeX = horseWidth
+        this.sizeY = horseLength
     }
     move()
     {
@@ -94,7 +96,7 @@ class Horse extends Sprite
     }
 }
 
-const horse = new Horse(0, 0, 40, 20, "brown", "right", speed, 0);
+const horse = new Horse(0, 0, horseLength, horseWidth, "brown", "right", speed, 0);
 
 class Text
 {
@@ -196,8 +198,9 @@ function animateHorse()
 
 function isPoisonNotOnHorse()
 {
-    if ((poison.positionX > horse.positionX + 80 || poison.positionX < horse.positionX - 60) &&
-        (poison.positionY > horse.positionY + 80 || poison.positionY < horse.positionY - 60))
+    // Keep a horse length between new poisons and horse
+    if ((poison.positionX > horse.positionX + (2 * horseLength) || poison.positionX < horse.positionX - itemSize - horseLength) &&
+        (poison.positionY > horse.positionY + (2 * horseLength) || poison.positionY < horse.positionY - itemSize - horseLength))
     {
         return true
     }
@@ -213,11 +216,10 @@ function generatePoison()
     {
         for (let i = 0; i < horse.score; i++)
         {
-            // Set poisons positions, not too close to horse
             do
             {
-                poison.positionX = Math.floor(Math.random() * (gameAreaSize - 20))
-                poison.positionY = Math.floor(Math.random() * (gameAreaSize - 20)) 
+                poison.positionX = Math.floor(Math.random() * (gameAreaSize - itemSize))
+                poison.positionY = Math.floor(Math.random() * (gameAreaSize - itemSize)) 
             }
             while (!isPoisonNotOnHorse())
 
@@ -237,10 +239,11 @@ function isFoodOnPoison()
 {
     for (let i = 0; i < poisonsPositions.length; i++)
     {
-        if (poisonsPositions[i][0] < food.positionX + itemSize + 40 &&
-            poisonsPositions[i][0] + itemSize + 40 > food.positionX &&
-            poisonsPositions[i][1] < food.positionY + itemSize + 40 &&
-            poisonsPositions[i][1] + itemSize + 40 > food.positionY)
+        // Keep a horse length between new food and poisons 
+        if (poisonsPositions[i][0] < food.positionX + itemSize + horseLength &&
+            poisonsPositions[i][0] + itemSize + horseLength > food.positionX &&
+            poisonsPositions[i][1] < food.positionY + itemSize + horseLength &&
+            poisonsPositions[i][1] + itemSize + horseLength > food.positionY)
         {
             return true
         }
@@ -255,11 +258,11 @@ function generateFood()
 {
     if (!isFoodGenerated)
     {
-        // Set food position, not too close to walls, nor on a poison
+        // Keep a horse length between new food and walls
         do
         {
-            food.positionX = Math.floor(Math.random() * (gameAreaSize - 80)) + 40
-            food.positionY = Math.floor(Math.random() * (gameAreaSize - 80)) + 40
+            food.positionX = Math.floor(Math.random() * (gameAreaSize - (2 * horseLength))) + horseLength
+            food.positionY = Math.floor(Math.random() * (gameAreaSize - (2 * horseLength))) + horseLength
         }
         while (isFoodOnPoison())
 
@@ -351,8 +354,8 @@ function sizeScreen()
 
     gameAreaSize = canvas.height
     gameAreaHalfSize = Math.floor(gameAreaSize / 2)
-    bottomWallPosition = gameAreaSize - 40
-    rightWallPosition = gameAreaSize - 40
+    bottomWallPosition = gameAreaSize - horseLength
+    rightWallPosition = gameAreaSize - horseLength
 }
 
 function getRandomDirection()

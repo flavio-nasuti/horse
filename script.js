@@ -162,26 +162,22 @@ function endTouchInput(swipe)
     const swipeEndY = swipe.changedTouches[0].clientY
 
     if (swipeStartX < (swipeEndX - swipeLimit) &&
-        Math.abs(swipeStartX - swipeEndX) > Math.abs(swipeStartY - swipeEndY) &&
-        horse.direction != "left")
+        (horse.direction == "up" || horse.direction == "down"))
     {
         horse.direction = "right"
     }
     else if (swipeStartX > (swipeEndX + swipeLimit) &&
-        Math.abs(swipeStartX - swipeEndX) > Math.abs(swipeStartY - swipeEndY) &&
-        horse.direction != "right")
+        (horse.direction == "up" || horse.direction == "down"))
     {
         horse.direction = "left"
     }
     else if (swipeStartY < (swipeEndY - swipeLimit) &&
-        Math.abs(swipeStartX - swipeEndX) < Math.abs(swipeStartY - swipeEndY) &&
-        horse.direction != "up")
+        (horse.direction == "left" || horse.direction == "right"))
     {
         horse.direction = "down"
     }
     else if (swipeStartY > (swipeEndY + swipeLimit) &&
-        Math.abs(swipeStartX - swipeEndX) < Math.abs(swipeStartY - swipeEndY) &&
-        horse.direction != "down")
+        (horse.direction == "left" || horse.direction == "right"))
     {
         horse.direction = "up"
     }

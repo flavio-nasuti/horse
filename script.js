@@ -343,12 +343,12 @@ function sizeScreen()
     // Size canvas for both landscape and portrait displays
     if (window.innerHeight < window.innerWidth)
     {
-        canvas.height = Math.floor(window.innerHeight) - 60
+        canvas.height = Math.floor(window.innerHeight) - 56
         canvas.width = canvas.height
     }
     else
     {
-        canvas.width = Math.floor(window.innerWidth) - 60
+        canvas.width = Math.floor(window.innerWidth) - 56
         canvas.height = canvas.width
     }
 

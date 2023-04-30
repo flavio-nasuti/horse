@@ -395,8 +395,10 @@ function gameLoop(currentFrameTimestamp)
 {   
     secondsPassed = (currentFrameTimestamp - previousFrameTimestamp) / 1000
     previousFrameTimestamp = currentFrameTimestamp
-    // For debug
-    //console.log(Math.round(secondsPassed * 3600) + " FPS")
+    // For debug on desktop
+    // console.log(Math.round(secondsPassed * 3600) + " FPS")
+    // For debug on mobile
+    // document.getElementById("fps").innerHTML = Math.round(secondsPassed * 3600) + " FPS"
 
     generatePoison()
     generateFood()

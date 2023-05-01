@@ -1,12 +1,21 @@
 html, body
 {
-    overflow: hidden;
-    overscroll-behavior: none;
     background-color: lightgreen;
+
+    overscroll-behavior: none;
+    overflow: hidden;
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 canvas
 {
     border: 20px solid #303030;
     background-color: wheat;
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

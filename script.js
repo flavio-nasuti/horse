@@ -134,7 +134,7 @@ function getKeyInput(key)
         else if ((key.code == "ArrowLeft" || key.code == "KeyA") && horse.direction != "right")
         {
             horse.direction = "left"
-        }    
+        }
     }
     else
     {
@@ -215,7 +215,7 @@ function generatePoison()
             do
             {
                 poison.positionX = Math.floor(Math.random() * (gameAreaSize - itemSize))
-                poison.positionY = Math.floor(Math.random() * (gameAreaSize - itemSize)) 
+                poison.positionY = Math.floor(Math.random() * (gameAreaSize - itemSize))
             }
             while (!isPoisonNotOnHorse())
 
@@ -235,7 +235,7 @@ function isFoodOnPoison()
 {
     for (let i = 0; i < poisonsPositions.length; i++)
     {
-        // Keep a horse length between new food and poisons 
+        // Keep a horse length between new food and poisons
         if (poisonsPositions[i][0] < food.positionX + itemSize + horseLength &&
             poisonsPositions[i][0] + itemSize + horseLength > food.positionX &&
             poisonsPositions[i][1] < food.positionY + itemSize + horseLength &&
@@ -392,23 +392,23 @@ function resetGame()
 }
 
 function gameLoop(currentFrameTimestamp)
-{   
+{
     secondsPassed = (currentFrameTimestamp - previousFrameTimestamp) / 1000
     previousFrameTimestamp = currentFrameTimestamp
 
     // For debug on desktop
     // console.log(Math.round(1 / secondsPassed) + " FPS")
-    
+
     // For debug on mobile
     // document.getElementById("fps").innerHTML = Math.round(1 / secondsPassed) + " FPS"
 
     generatePoison()
     generateFood()
-    animateHorse() 
+    animateHorse()
     checkWallCollision()
     checkPoisonCollision()
     checkFoodCollision()
-    
+
     if (!gameOver)
     {
         window.requestAnimationFrame(gameLoop)

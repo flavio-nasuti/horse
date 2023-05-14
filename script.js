@@ -77,57 +77,82 @@ class Horse extends Sprite
         if (this.direction == "right")
         {
             this.positionHorizontaly()
-            this.positionX += Math.round(this.speed * secondsPassed)
 
+            // Straightforward movement
+            if (this.previousDirection == "right")
+            {
+                this.positionX += Math.round(this.speed * secondsPassed)
+            }
+
+            // Correction for horse size on certain turns
             if (this.previousDirection == "down")
             {
-                this.positionY += 20
+                this.positionY += (horseLength - horseWidth)
             }
 
             this.previousDirection = this.direction
         }
+
         else if (this.direction == "left")
         {
             this.positionHorizontaly()
-            this.positionX -= Math.round(this.speed * secondsPassed)
 
+            // Straightforward movement
+            if (this.previousDirection == "left")
+            {
+                this.positionX -= Math.round(this.speed * secondsPassed)
+            }            
+            
+            // Corrections for horse size on certain turns
             if (this.previousDirection == "down")
             {
-                this.positionY += 20
+                this.positionY += (horseLength - horseWidth)
             }
-
-            if (this.previousDirection != "left")
+            if (this.previousDirection == "up" || this.previousDirection == "down")
             {
-                this.positionX -= 20
+                this.positionX -= (horseLength - horseWidth)
             }
 
             this.previousDirection = this.direction
         }
+
         else if (this.direction == "up")
         {
             this.positionVerticaly()
-            this.positionY -= Math.round(this.speed * secondsPassed)
 
+            // Straightforward movement
+            if (this.previousDirection == "up")
+            {
+                this.positionY -= Math.round(this.speed * secondsPassed)
+            }    
+
+            // Corrections for horse size on certain turns
             if (this.previousDirection == "right")
             {
-                this.positionX += 20
+                this.positionX += (horseLength - horseWidth)
             }
-
-            if (this.previousDirection != "up")
+            if (this.previousDirection == "left" || this.previousDirection == "right")
             {
-                this.positionY -= 20
+                this.positionY -= (horseLength - horseWidth)
             }
 
             this.previousDirection = this.direction
         }
+
         else if (this.direction == "down")
         {
             this.positionVerticaly()
-            this.positionY += Math.round(this.speed * secondsPassed)
 
+            // Straightforward movement
+            if (this.previousDirection == "down")
+            {
+                this.positionY += Math.round(this.speed * secondsPassed)
+            }
+
+            // Correction for horse size on certain turns
             if (this.previousDirection == "right")
             {
-                this.positionX += 20
+                this.positionX += (horseLength - horseWidth)
             }
 
             this.previousDirection = this.direction

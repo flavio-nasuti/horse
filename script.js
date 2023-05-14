@@ -54,10 +54,11 @@ const poison = new Sprite(0, 0, itemSize, itemSize, "red")
 
 class Horse extends Sprite
 {
-    constructor(positionX, positionY, sizeX, sizeY, color, direction, speed, score)
+    constructor(positionX, positionY, sizeX, sizeY, color, direction, previousDirection, speed, score)
     {
         super(positionX, positionY, sizeX, sizeY, color)
         this.direction = direction
+        this.previousDirection = previousDirection
         this.speed = speed
         this.score = score
     }
@@ -77,26 +78,64 @@ class Horse extends Sprite
         {
             this.positionHorizontaly()
             this.positionX += Math.round(this.speed * secondsPassed)
+
+            if (this.previousDirection == "down")
+            {
+                this.positionY += 20
+            }
+
+            this.previousDirection = this.direction
         }
         else if (this.direction == "left")
         {
             this.positionHorizontaly()
             this.positionX -= Math.round(this.speed * secondsPassed)
+
+            if (this.previousDirection == "down")
+            {
+                this.positionY += 20
+            }
+
+            if (this.previousDirection != "left")
+            {
+                this.positionX -= 20
+            }
+
+            this.previousDirection = this.direction
         }
         else if (this.direction == "up")
         {
             this.positionVerticaly()
             this.positionY -= Math.round(this.speed * secondsPassed)
+
+            if (this.previousDirection == "right")
+            {
+                this.positionX += 20
+            }
+
+            if (this.previousDirection != "up")
+            {
+                this.positionY -= 20
+            }
+
+            this.previousDirection = this.direction
         }
         else if (this.direction == "down")
         {
             this.positionVerticaly()
             this.positionY += Math.round(this.speed * secondsPassed)
+
+            if (this.previousDirection == "right")
+            {
+                this.positionX += 20
+            }
+
+            this.previousDirection = this.direction
         }
     }
 }
 
-const horse = new Horse(0, 0, horseLength, horseWidth, "brown", "right", speed, 0);
+const horse = new Horse(0, 0, horseLength, horseWidth, "brown", "right", "right", speed, 0);
 
 class Text
 {
@@ -269,9 +308,9 @@ function generateFood()
 
 function checkWallCollision()
 {
-    if (horse.positionX > rightWallPosition ||
+    if (horse.positionX > rightWallPosition - horse.sizeX ||
         horse.positionX < leftWallPosition ||
-        horse.positionY > bottomWallPosition ||
+        horse.positionY > bottomWallPosition - horse.sizeY ||
         horse.positionY < topWallPosition)
     {
         gameOver = true
@@ -350,8 +389,8 @@ function sizeScreen()
 
     gameAreaSize = canvas.height
     gameAreaHalfSize = Math.floor(gameAreaSize / 2)
-    bottomWallPosition = gameAreaSize - horseLength
-    rightWallPosition = gameAreaSize - horseLength
+    bottomWallPosition = gameAreaSize
+    rightWallPosition = gameAreaSize
 }
 
 function getRandomDirection()
@@ -380,6 +419,7 @@ function resetGame()
     horse.positionX = gameAreaHalfSize
     horse.positionY = gameAreaHalfSize
     horse.direction = getRandomDirection()
+    horse.previousDirection = horse.direction
     horse.score = 0
 
     isFoodGenerated = false

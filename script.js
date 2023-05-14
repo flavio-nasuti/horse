@@ -101,8 +101,8 @@ class Horse extends Sprite
             if (this.previousDirection == "left")
             {
                 this.positionX -= Math.round(this.speed * secondsPassed)
-            }            
-            
+            }
+
             // Corrections for horse size on certain turns
             if (this.previousDirection == "down")
             {
@@ -124,7 +124,7 @@ class Horse extends Sprite
             if (this.previousDirection == "up")
             {
                 this.positionY -= Math.round(this.speed * secondsPassed)
-            }    
+            }
 
             // Corrections for horse size on certain turns
             if (this.previousDirection == "right")
